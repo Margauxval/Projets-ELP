@@ -19,9 +19,12 @@ flou gaussien : mmoyenne sur les px, attention aux bordures
 
 ## Notre avancée / objectifs
 
-- commencer à regarder les perfs du programme
-- faire une "bilbiothèque" de filtres utilisables
-- établir une co TCP serv/ client avec des tags pour exe le programme selon ce que veut le client. (commencé)
+- on a commencé à évaluer les perf : temps d'exe, on compte aussi tester sur des ordis avec un nb de coeurs différent (un avec 6 coeurs de 2 theards par coeur et un de 8 coeurs de simple threading), on sait pas encore le reste
+- les filtres sont opérationnels
+- on compte commencer le CR jeudi
+- il y a encore bcp de chatgpt dans le code mais pareil on essaie de régler ça avant jeudi
+- on compte faire un dossier "filters" qui contiendra les librairies de fichier pour raccourcir le fichier main.
+- si on a le temps : améliorer les flags, finir modif couleur sélect et essayer distorsion. 
 
 ## Les filtres
 - Noir et blanc (ok)
