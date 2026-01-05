@@ -265,6 +265,19 @@ func processChunk(src, dst *image.RGBA, bounds image.Rectangle, startY, endY int
 	}
 }
 
+// evaluation des performances:
+func logPerf(filter string, workers int, duration time.Duration, bounds image.Rectangle) {
+    width := bounds.Max.X - bounds.Min.X
+    height := bounds.Max.Y - bounds.Min.Y
+
+    fmt.Println("────────────────────────────────────────")
+    fmt.Println("Filtre utilisé      :", filter)
+    fmt.Println("Goroutines utilisées:", workers)
+    fmt.Println("Taille image        :", width, "x", height)
+    fmt.Println("Temps de traitement :", duration)
+    fmt.Println("────────────────────────────────────────")
+}
+
 //
 // ────────────────────────────────────────────────────────────────
 //  MAIN
@@ -384,7 +397,8 @@ Filtres disponibles :
 
 	wg.Wait()
 
-	fmt.Println("Temps de traitement :", time.Since(start))
+	duration := time.Since(start)
+	logPerf(filterName, ngoroutines, duration, bounds)
 
 	// SAUVEGARDE DE L'IMAGE
 	out, err := os.Create(outputPath)
@@ -398,3 +412,4 @@ Filtres disponibles :
 	fmt.Println("Image traitée avec filtre", filterName, "et sauvegardée dans", outputPath)
 
 }
+
