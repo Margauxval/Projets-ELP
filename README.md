@@ -30,3 +30,71 @@ flou gaussien : mmoyenne sur les px, attention aux bordures
 
 
 ## CR 
+
+### 1. Le problème choisi  
+Explique en quelques phrases :  
+– quel problème vous avez décidé de résoudre (ex : multiplication de matrices, Levenshtein, random walks, etc.)  
+– pourquoi ce problème est intéressant pour la concurrence  
+– quelles sont les entrées et les sorties de votre programme
+
+---
+
+### 2. L’architecture générale  
+Décris votre application :  
+– version locale simple  
+– version locale concurrente  
+– version serveur TCP concurrent  
+– worker pool si vous en avez un  
+
+Explique comment les différentes parties communiquent : goroutines, channels, workers, etc.
+
+---
+
+### 3. Le design concurrent  
+C’est la partie la plus importante.  
+Explique :  
+– quelles goroutines existent  
+– ce qu’elles font  
+– comment vous synchronisez (waitgroups, channels)  
+– pourquoi ce design est efficace pour votre problème  
+– comment vous évitez les blocages / deadlocks
+
+---
+
+### 4. Le serveur TCP  
+Décris :  
+– comment vous acceptez les connexions  
+– comment vous gérez plusieurs clients en parallèle  
+– comment vous découpez les messages (lecture bloquante, fin de ligne, protocole simple)  
+– comment vous renvoyez les résultats
+
+---
+
+### 5. Les performances  
+Explique ce que vous avez mesuré :  
+– temps d’exécution en séquentiel  
+– temps d’exécution en concurrent  
+– impact du nombre de workers  
+– limites rencontrées (CPU, I/O, taille des données, etc.)  
+
+Pas besoin de graphiques compliqués, juste montrer que vous avez testé.
+
+---
+
+### 6. Les difficultés rencontrées  
+Parlez honnêtement de :  
+– bugs de concurrence  
+– problèmes de protocole TCP  
+– erreurs de design que vous avez corrigées  
+– limites de votre solution  
+
+Pierre aime quand on montre qu’on a appris quelque chose.
+
+---
+
+### 7. Conclusion  
+En quelques lignes :  
+– ce que vous avez appris sur Go  
+– ce que vous auriez amélioré avec plus de temps  
+– ce que ce projet vous a apporté
+
