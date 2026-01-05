@@ -1,6 +1,9 @@
 package main
 
 import (
+	"bytes"
+	"encoding/binary"
+	"flag"
 	"fmt"
 	"image"
 	"image/jpeg"
@@ -8,15 +11,29 @@ import (
 	"os"
 )
 
+const serverAddr = "localhost:9000" // adresse fixe
+
 func main() {
-	conn, err := net.Dial("tcp", "localhost:9000")
+
+	//  Flags : permettent à l'user d'utiliser des param juste en les écrivant
+	imagePath := flag.String("image", "", "Chemin vers l'image à envoyer")
+	filterName := flag.String("filter", "noirblanc", "Nom du filtre à appliquer")
+	flag.Parse()
+
+	if *imagePath == "" {
+		fmt.Println("Erreur : vous devez spécifier --image=chemin")
+		return
+	}
+
+	// Connexion au serveur via TCP - j'ai pas trop compris ça, à revoir
+	conn, err := net.Dial("tcp", serverAddr)
 	if err != nil {
 		panic(err)
 	}
 	defer conn.Close()
 
-	// Ouvrir et décoder l'image
-	file, err := os.Open("testphoto.jpg")
+	// Charger l'img
+	file, err := os.Open(*imagePath)
 	if err != nil {
 		panic(err)
 	}
@@ -27,29 +44,30 @@ func main() {
 		panic(err)
 	}
 
-	// Envoyer l'image au serveur
-	err = jpeg.Encode(conn, img, nil)
+	// Encoder l'img : à quoi ca sert ?
+	buf := new(bytes.Buffer)
+	jpeg.Encode(buf, img, nil)
+	data := buf.Bytes()
+
+	// Envoyer filtre, taille et data img
+	padded := make([]byte, 32)
+	copy(padded, []byte(*filterName))
+	conn.Write(padded)
+	binary.Write(conn, binary.BigEndian, uint32(len(data)))
+	conn.Write(data)
+
+	// Recevoir et save l'img modifiée
+	resultImg, _, err := image.Decode(conn)
 	if err != nil {
 		panic(err)
 	}
-
-	// Recevoir l'image modifiée
-	outImg, _, err := image.Decode(conn)
-	if err != nil {
-		panic(err)
-	}
-
-	// Sauvegarder l'image reçue
-	out, err := os.Create("photo_modifiee.jpg")
+	out, err := os.Create("resultat.jpg")
 	if err != nil {
 		panic(err)
 	}
 	defer out.Close()
 
-	err = jpeg.Encode(out, outImg, nil)
-	if err != nil {
-		panic(err)
-	}
+	jpeg.Encode(out, resultImg, nil)
 
-	fmt.Println("Image modifiée reçue et sauvegardée.")
+	fmt.Println("Image modifiée reçue et sauvegardée sous resultat.jpg")
 }

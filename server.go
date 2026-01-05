@@ -1,11 +1,15 @@
 package main
 
 import (
+	"bytes"
+	"encoding/binary"
 	"fmt"
 	"image"
-	"image/color"
 	"image/jpeg"
 	"net"
+
+	"project/filters"
+	"project/processing"
 )
 
 func main() {
@@ -18,7 +22,7 @@ func main() {
 	for {
 		conn, err := ln.Accept()
 		if err != nil {
-			fmt.Println("Erreur de connexion :", err)
+			fmt.Println("Erreur connexion :", err)
 			continue
 		}
 		go handleClient(conn)
@@ -28,40 +32,27 @@ func main() {
 func handleClient(conn net.Conn) {
 	defer conn.Close()
 
-	// Lire l'image envoyée
-	img, _, err := image.Decode(conn)
+	// Lecture du filtre souhaité
+	filterNameBuf := make([]byte, 32)
+	conn.Read(filterNameBuf)
+	filterName := string(filterNameBuf)
+	filter := filters.Get(filterName)
+
+	// taille et data de l'image
+	var size uint32
+	binary.Read(conn, binary.BigEndian, &size)
+	imgData := make([]byte, size)
+	conn.Read(imgData)
+
+	img, _, err := image.Decode(bytes.NewReader(imgData))
 	if err != nil {
-		fmt.Println("Erreur de décodage image :", err)
+		fmt.Println("Erreur decode image :", err)
 		return
 	}
 
-	// Traiter l'image (ex: filtre bleuté)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(bounds)
-	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
-		for x := bounds.Min.X; x < bounds.Max.X; x++ {
-			r, g, b, a := img.At(x, y).RGBA()
-			R := uint8(r >> 8)
-			G := uint8(g >> 8)
-			B := uint8(b >> 8)
-			A := uint8(a >> 8)
+	// lancement des go routines (traitement parallèle)
+	result := processing.ApplyFilterParallel(img, filter)
 
-			// Filtre bleuté simple
-			newR := R / 2
-			newG := G / 2
-			newB := uint8(min(int(B)+80, 255))
-
-			rgba.Set(x, y, color.RGBA{R: newR, G: newG, B: uint8(newB), A: A})
-		}
-	}
-
-	// Renvoyer l'image modifiée
-	jpeg.Encode(conn, rgba, nil)
-}
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
+	// Encoder et renvoyer (renvoi dans la commande)
+	jpeg.Encode(conn, result, nil)
 }
