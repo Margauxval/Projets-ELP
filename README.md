@@ -16,3 +16,17 @@ numcpu : nb de cpu ds l'ordi si pas param je prends osnumcpu attention aux divis
 on peut passer en go routine une référence et direct changer la photo au lieu d'en créer une nouvelle 
 flou gaussien : mmoyenne sur les px, attention aux bordures
 
+## Notre avancée / objectifs
+
+- commencer à regarder les perfs du programme
+- faire une "bilbiothèque" de filtres utilisables
+- établir une co TCP serv/ client avec des tags pour exe le programme selon ce que veut le client. (commencé)
+
+## Les filtres
+- Noir et blanc
+- Flou gaussien
+- Filtre de couleur
+- modification d'une couleur sélectionnée (par une autre couleur ou des pixel multicolors)
+
+
+## CR 
