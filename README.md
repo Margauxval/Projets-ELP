@@ -24,12 +24,12 @@ flou gaussien : mmoyenne sur les px, attention aux bordures
 - établir une co TCP serv/ client avec des tags pour exe le programme selon ce que veut le client. (commencé)
 
 ## Les filtres
-- Noir et blanc
-- Flou gaussien
-- Filtre de couleur
+- Noir et blanc (ok)
+- Flou gaussien 
+- Filtre de couleur (ok)
 - filtre thermique
 - (si on a le temps) filtre de distorsion
-- modification d'une couleur sélectionnée (par une autre couleur ou des pixel multicolors)
+- modification d'une couleur sélectionnée (par une autre couleur ou des pixel multicolors) (1 couleur suelement pr l'instant)
 
 
 ## CR 
