@@ -25,9 +25,9 @@ flou gaussien : mmoyenne sur les px, attention aux bordures
 
 ## Les filtres
 - Noir et blanc (ok)
-- Flou gaussien 
+- Flou gaussien (ok)
 - Filtre de couleur (ok)
-- filtre thermique
+- filtre thermique (ok)
 - (si on a le temps) filtre de distorsion
 - modification d'une couleur sélectionnée (par une autre couleur ou des pixel multicolors) (1 couleur suelement pr l'instant)
 
