@@ -63,6 +63,7 @@ Explique :
 – comment vous synchronisez (waitgroups, channels)  
 – pourquoi ce design est efficace pour votre problème  
 – comment vous évitez les blocages / deadlocks
+- caulcul coeurs utilisables go routines
 
 ---
 
@@ -82,7 +83,6 @@ Explique ce que vous avez mesuré :
 – impact du nombre de workers  
 – limites rencontrées (CPU, I/O, taille des données, etc.)  
 
-Pas besoin de graphiques compliqués, juste montrer que vous avez testé.
 
 ---
 
@@ -93,7 +93,14 @@ Parlez honnêtement de :
 – erreurs de design que vous avez corrigées  
 – limites de votre solution  
 
-Pierre aime quand on montre qu’on a appris quelque chose.
+### Pb à résoudre : 
+-  flou gaussien, plage de couleurs thermique, sélect couleur et changer en une autre couleur : trop picky sur la sélection de couleur 
+-  si la résqolution de l'img est trop basse : anticiper le cas
+-  effets de bord flou gaussien
+-  
+- fonctions privées public "filters" on avait pas tt compris
+- 
+
 
 ---
 
