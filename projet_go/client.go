@@ -16,6 +16,14 @@ func main() {
   Programme de traitement d'image — JP, Lilou & Margaux
 ──────────────────────────────────────────────────────────────
 
+Utilisation :
+    go run client.go <chemin_image_entree> <chemin_image_sortie> <nom_filtre>
+
+Arguments :
+    <chemin_image_entree>   : chemin vers l'image source (ex: input.jpg)
+    <chemin_image_sortie>   : chemin vers l'image générée (ex: output.jpg)
+    <nom_filtre>            : filtre à appliquer
+
 Filtres disponibles :
     noirblanc
     thermique
@@ -23,26 +31,23 @@ Filtres disponibles :
     rouge, orange, jaune, vert, bleu, violet
     gaussien (flou)
 
+Exemple :
+    go run client.go photo.jpg resultat.jpg gaussien
+
 ──────────────────────────────────────────────────────────────
 `)
 
-	var inputPath string
-	var outputPath string
-	var filterName string
-
-	fmt.Print("Chemin de l'image d'entrée (ex: input.jpg) : ")
-	fmt.Scanln(&inputPath)
-
-	fmt.Print("Chemin de l'image de sortie (ex: output.jpg) : ")
-	fmt.Scanln(&outputPath)
-
-	fmt.Print("Nom du filtre : ")
-	fmt.Scanln(&filterName)
-
-	if inputPath == "" {
-		fmt.Println("Erreur : aucun fichier d'entrée fourni.")
+	// Vérification des arguments
+	if len(os.Args) < 4 {
+		fmt.Println("Usage : go run client.go <inputPath> <outputPath> <filterName>")
 		return
 	}
+
+	inputPath := os.Args[1]
+	outputPath := os.Args[2]
+	filterName := os.Args[3]
+
+	// Valeurs par défaut si besoin
 	if outputPath == "" {
 		outputPath = "output.jpg"
 	}
@@ -50,6 +55,7 @@ Filtres disponibles :
 		filterName = "noirblanc"
 	}
 
+	// Lecture de l'image
 	file, err := os.Open(inputPath)
 	if err != nil {
 		panic(err)
@@ -66,6 +72,7 @@ Filtres disponibles :
 		panic(err)
 	}
 
+	// Connexion au serveur
 	conn, err := net.Dial("tcp", "localhost:8080")
 	if err != nil {
 		panic(err)
@@ -104,3 +111,5 @@ Filtres disponibles :
 
 	fmt.Println("Image traitée avec filtre", filterName, "et sauvegardée dans", outputPath)
 }
+
+
