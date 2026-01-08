@@ -47,6 +47,18 @@ func main() {
 	}
 }
 
+func logPerf(filter string, workers int, duration time.Duration, bounds image.Rectangle) {
+    width := bounds.Max.X - bounds.Min.X
+    height := bounds.Max.Y - bounds.Min.Y
+
+    fmt.Println("────────────────────────────────────────")
+    fmt.Println("Filtre utilisé      :", filter)
+    fmt.Println("Goroutines utilisées:", workers)
+    fmt.Println("Taille image        :", width, "x", height)
+    fmt.Println("Temps de traitement :", duration)
+    fmt.Println("────────────────────────────────────────")
+}
+
 func handleConnection(conn net.Conn) {
 	defer conn.Close()
 
@@ -112,7 +124,8 @@ func handleConnection(conn net.Conn) {
 	}
 	wg.Wait()
 
-	fmt.Println("Image traitée en", time.Since(start))
+	duration := time.Since(start)
+	logPerf(filterName, ngoroutines, duration, bounds)
 
 	var outBuf bytes.Buffer
 	if err := jpeg.Encode(&outBuf, dst, nil); err != nil {
@@ -273,4 +286,5 @@ Filtres disponibles :
 
 	fmt.Println("Image traitée avec filtre", filterName, "et sauvegardée dans", outputPath)
 }
+
 
