@@ -2,16 +2,15 @@
 ## Image filter
 
 
-* lien du replit : https://replit.com/@lilounadlerr/Image-FilterGo *
+# lien du replit : https://replit.com/@lilounadlerr/Image-FilterGo #
 * lien du discord : https://discord.gg/GeVZBCfj *
 Ne pas oublier d'évaluer les performances suivant la taille de l'image.
 mettre le nombre de goroutine en parametre pour diviser le travail de limage.
 Pas obligé client serveur.
 
 
-* indications du prof : mieux vaut se pencher sur l'évaluation des perf et la connexion tcp
-attention pas opti car une gr par pixel, idem pour ligne par ligne ou colonne par colonne
-optimal = nb cœur *2, mettre en param nb go routine
+* indications du prof :client transferer un objet sans save en disque : gob dcoder img en local balancer dans un 
+* attention si l'img est plus petite que la go routine (l 384) : verif si start y is in bound 
 
 numcpu : nb de cpu ds l'ordi si pas param je prends osnumcpu attention aux divisions décimales 
 on peut passer en go routine une référence et direct changer la photo au lieu d'en créer une nouvelle 
