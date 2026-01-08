@@ -4,6 +4,7 @@
 
 
 ** lien du discord : https://discord.gg/GeVZBCfj **
+lien du word partagé pour le CR : https://1drv.ms/w/c/1265599f2c973b15/IQBkCcqY6tWAR5_e4vzt7A3hAdIRe-JQZ7qYGWRfCDgiZhA?e=ceyja6
 lien du prompt copilot partagé : https://copilot.microsoft.com/conversations/join/Ln8sFHZReaSMkE3ZAUQZH
 Ne pas oublier d'évaluer les performances suivant la taille de l'image.
 mettre le nombre de goroutine en parametre pour diviser le travail de limage.
