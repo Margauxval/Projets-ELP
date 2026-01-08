@@ -4,6 +4,7 @@
 
 
 ** lien du discord : https://discord.gg/GeVZBCfj **
+lien du prompt copilot partagé : https://copilot.microsoft.com/conversations/join/Ln8sFHZReaSMkE3ZAUQZH
 Ne pas oublier d'évaluer les performances suivant la taille de l'image.
 mettre le nombre de goroutine en parametre pour diviser le travail de limage.
 Pas obligé client serveur.
