@@ -1,4 +1,4 @@
-module Page exposing (..)
+module Main exposing (..)
 
 import Browser
 import Html exposing (..)
@@ -78,3 +78,4 @@ viewValidation model =
     div [ style "color" "green" ] [ text "OK" ]
   else
     div [ style "color" "red" ] [ text "Passwords do not match!" ]
+
