@@ -1,16 +1,17 @@
 # Projets-ELP
-## Image filter
+
 
 
 
 ** lien du discord : https://discord.gg/GeVZBCfj **
 lien du word partagé pour le CR : https://1drv.ms/w/c/1265599f2c973b15/IQBkCcqY6tWAR5_e4vzt7A3hAdIRe-JQZ7qYGWRfCDgiZhA?e=ceyja6
+
+
+## projet GO : image filter 
 lien du prompt copilot partagé : https://copilot.microsoft.com/conversations/join/Ln8sFHZReaSMkE3ZAUQZH
 Ne pas oublier d'évaluer les performances suivant la taille de l'image.
 mettre le nombre de goroutine en parametre pour diviser le travail de limage.
 Pas obligé client serveur.
-
-
 * indications du prof :client transferer un objet sans save en disque : gob dcoder img en local balancer dans un 
 * attention si l'img est plus petite que la go routine (l 384) : verif si start y is in bound 
 
@@ -18,7 +19,7 @@ numcpu : nb de cpu ds l'ordi si pas param je prends osnumcpu attention aux divis
 on peut passer en go routine une référence et direct changer la photo au lieu d'en créer une nouvelle 
 flou gaussien : mmoyenne sur les px, attention aux bordures
 
-## Notre avancée / objectifs
+### Notre avancée / objectifs
 
 - on a commencé à évaluer les perf : temps d'exe, on compte aussi tester sur des ordis avec un nb de coeurs différent (un avec 6 coeurs de 2 theards par coeur et un de 8 coeurs de simple threading), on sait pas encore le reste
 - les filtres sont opérationnels
@@ -27,7 +28,7 @@ flou gaussien : mmoyenne sur les px, attention aux bordures
 - on compte faire un dossier "filters" qui contiendra les librairies de fichier pour raccourcir le fichier main.
 - si on a le temps : améliorer les flags, finir modif couleur sélect et essayer distorsion. 
 
-## Les filtres
+### Les filtres
 - Noir et blanc (ok)
 - Flou gaussien (ok)
 - Filtre de couleur (ok)
@@ -36,9 +37,9 @@ flou gaussien : mmoyenne sur les px, attention aux bordures
 - modification d'une couleur sélectionnée (par une autre couleur ou des pixel multicolors) (1 couleur suelement pr l'instant)
 
 
-## CR 
+### CR 
 
-### 1. Le problème choisi  
+#### 1. Le problème choisi  
 Explique en quelques phrases :  
 – quel problème vous avez décidé de résoudre (ex : multiplication de matrices, Levenshtein, random walks, etc.)  
 – pourquoi ce problème est intéressant pour la concurrence  
@@ -46,7 +47,7 @@ Explique en quelques phrases :
 
 ---
 
-### 2. L’architecture générale  
+#### 2. L’architecture générale  
 Décris votre application :  
 – version locale simple  
 – version locale concurrente  
@@ -57,7 +58,7 @@ Explique comment les différentes parties communiquent : goroutines, channels, w
 
 ---
 
-### 3. Le design concurrent  
+#### 3. Le design concurrent  
 C’est la partie la plus importante.  
 Explique :  
 – quelles goroutines existent  
@@ -69,7 +70,7 @@ Explique :
 
 ---
 
-### 4. Le serveur TCP  
+#### 4. Le serveur TCP  
 Décris :  
 – comment vous acceptez les connexions  
 – comment vous gérez plusieurs clients en parallèle  
@@ -78,7 +79,7 @@ Décris :
 
 ---
 
-### 5. Les performances  
+#### 5. Les performances  
 Explique ce que vous avez mesuré :  
 – temps d’exécution en séquentiel  
 – temps d’exécution en concurrent  
@@ -88,14 +89,14 @@ Explique ce que vous avez mesuré :
 
 ---
 
-### 6. Les difficultés rencontrées  
+#### 6. Les difficultés rencontrées  
 Parlez honnêtement de :  
 – bugs de concurrence  
 – problèmes de protocole TCP  
 – erreurs de design que vous avez corrigées  
 – limites de votre solution  
 
-### Pb à résoudre : 
+#### Pb à résoudre : 
 -  flou gaussien, plage de couleurs thermique, sélect couleur et changer en une autre couleur : trop picky sur la sélection de couleur 
 -  si la résqolution de l'img est trop basse : anticiper le cas
 -  effets de bord flou gaussien
@@ -106,7 +107,7 @@ Parlez honnêtement de :
 
 ---
 
-### 7. Conclusion  
+#### 7. Conclusion  
 En quelques lignes :  
 – ce que vous avez appris sur Go  
 – ce que vous auriez amélioré avec plus de temps  
