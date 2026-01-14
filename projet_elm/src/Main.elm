@@ -3,79 +3,86 @@ module Main exposing (..)
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onInput)
-
+import Html.Events exposing (onClick)
 
 
 -- MAIN
 
-
 main =
-  Browser.sandbox { init = init, update = update, view = view }
-
+    Browser.sandbox { init = init, update = update, view = view }
 
 
 -- MODEL
 
-
 type alias Model =
-  { name : String
-  , password : String
-  , passwordAgain : String
-  }
+    Int
 
 
 init : Model
 init =
-  Model "" "" ""
-
+    0
 
 
 -- UPDATE
 
-
 type Msg
-  = Name String
-  | Password String
-  | PasswordAgain String
+    = Couleur
+    | Avancer
+    | Tourner
+    | Cercle
+    | Triangle
+    | Tortue
+    | Rectangle
 
 
 update : Msg -> Model -> Model
 update msg model =
-  case msg of
-    Name name ->
-      { model | name = name }
+    case msg of
+        Couleur ->
+            model + 1
 
-    Password password ->
-      { model | password = password }
+        Avancer ->
+            model + 1
 
-    PasswordAgain password ->
-      { model | passwordAgain = password }
+        Tourner ->
+            model + 1
 
+        Cercle ->
+            model + 1
+
+        Triangle ->
+            model + 1
+
+        Tortue ->
+            model + 1
+
+        Rectangle ->
+            model + 1
 
 
 -- VIEW
 
-
 view : Model -> Html Msg
 view model =
-  div []
-    [ viewInput "text" "Name" model.name Name
-    , viewInput "password" "Password" model.password Password
-    , viewInput "password" "Re-enter Password" model.passwordAgain PasswordAgain
-    , viewValidation model
-    ]
+    div []
+        [ button [ onClick Couleur ] [ text "Changer de couleur" ]
+        , div [] [ text (String.fromInt model) ]
 
+        , button [ onClick Avancer ] [ text "Avancer" ]
+        , div [] [ text (String.fromInt model) ]
 
-viewInput : String -> String -> String -> (String -> msg) -> Html msg
-viewInput t p v toMsg =
-  input [ type_ t, placeholder p, value v, onInput toMsg ] []
+        , button [ onClick Tourner ] [ text "Tourner" ]
+        , div [] [ text (String.fromInt model) ]
 
+        , button [ onClick Cercle ] [ text "Cercle" ]
+        , div [] [ text (String.fromInt model) ]
 
-viewValidation : Model -> Html msg
-viewValidation model =
-  if model.password == model.passwordAgain then
-    div [ style "color" "green" ] [ text "OK" ]
-  else
-    div [ style "color" "red" ] [ text "Passwords do not match!" ]
+        , button [ onClick Triangle ] [ text "Triangle" ]
+        , div [] [ text (String.fromInt model) ]
 
+        , button [ onClick Tortue ] [ text "Tortue" ]
+        , div [] [ text (String.fromInt model) ]
+
+        , button [ onClick Rectangle ] [ text "Rectangle" ]
+        , div [] [ text (String.fromInt model) ]
+        ]
