@@ -128,3 +128,9 @@ Pour l'instant, on a :
 Pour exe le projet, en gros à chaque modif il faut actualiser le main.js --> taper elm make src/Main.elm --output=main.js
 dans le terminal!!
 
+### Des idées d'amélioration du projet :
+
+- Coder + intuitivement les directions : appuyer sur des boutons pour changer de direction, ou avancer par exemple
+- des formes pré définies : cercle, rectangle, triangle, tortue par exemple : appuyer sur un bouton pour mettre le code qui les crée.
+- Changement de couleur : pareil appui sur un bouton pour changer de couleur ??
+
