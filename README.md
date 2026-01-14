@@ -107,9 +107,21 @@ Parlez honnêtement de :
 
 ---
 
-#### 7. Conclusion  
-En quelques lignes :  
+#### 7. Conclusion 
+ 
+-
+   En quelques lignes :  
 – ce que vous avez appris sur Go  
 – ce que vous auriez amélioré avec plus de temps  
 – ce que ce projet vous a apporté
+
+---
+
+## Projet Elm 
+
+On pensait plutot partir sur l'affichage d'un dessin que sur le word guesser, 
+Pour l'instant, on a : 
+- un fichier Page.elm qui code la mise en page et met tout ça sur un dossier main.js
+- un fichier main.js qui contient le code en java script de la page
+- un index.html pour interpréter et afficher le fichier js dans le navigateur 
 
