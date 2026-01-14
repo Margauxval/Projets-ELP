@@ -123,5 +123,8 @@ On pensait plutot partir sur l'affichage d'un dessin que sur le word guesser,
 Pour l'instant, on a : 
 - un fichier Page.elm qui code la mise en page et met tout ça sur un dossier main.js
 - un fichier main.js qui contient le code en java script de la page
-- un index.html pour interpréter et afficher le fichier js dans le navigateur 
+- un index.html pour interpréter et afficher le fichier js dans le navigateur
+
+Pour exe le projet, en gros à chaque modif il faut actualiser le main.js --> taper elm make src/Main.elm --output=main.js
+dans le terminal!!
 
