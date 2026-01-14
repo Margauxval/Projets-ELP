@@ -134,3 +134,5 @@ dans le terminal!!
 - des formes pré définies : cercle, rectangle, triangle, tortue par exemple : appuyer sur un bouton pour mettre le code qui les crée.
 - Changement de couleur : pareil appui sur un bouton pour changer de couleur ??
 
+- J'ai bcp vu sur internet que c'était récurrent d'importer le format svg et de créer des formes direct dans le fichier, et de les associer avec des fonctions, à voir !!
+
