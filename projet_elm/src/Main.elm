@@ -14,6 +14,7 @@ type alias Model =
     { source : String
     , result : Result String (List Instruction)
     , color : String
+    , showDrawing : Bool
     }
 
 
@@ -22,6 +23,7 @@ init =
     { source = "[ ]"
     , result = Ok []
     , color = "black"
+    , showDrawing = False
     }
 
 
@@ -35,10 +37,12 @@ type Msg
     | AddSquare
     | AddTriangle
     | AddCircle
-    | AddTurtle
+    | AddHeart
+    | AddStar
     | ClearProgram
     | Undo
     | SetColor String
+    | Trace
 
 
 -- UPDATE
@@ -51,80 +55,71 @@ update msg model =
     in
     case msg of
         UpdateSource txt ->
-            autoRun { model | source = txt }
+            { model | source = txt }
 
         AddForward ->
-            autoRun (appendInstruction "Forward 20" model)
+            { model | source = appendInstruction "Forward 20" model.source }
 
         AddLeft ->
-            autoRun (appendInstruction "Left 15" model)
+            { model | source = appendInstruction "Left 15" model.source }
 
         AddRight ->
-            autoRun (appendInstruction "Right 15" model)
+            { model | source = appendInstruction "Right 15" model.source }
 
         AddSquare ->
-            autoRun (appendInstruction "Repeat 4 [Forward 80, Left 90]" model)
+            { model | source = appendInstruction "Repeat 4 [Forward 80, Left 90]" model.source }
 
         AddTriangle ->
-            autoRun (appendInstruction "Repeat 3 [Forward 100, Left 120]" model)
+            { model | source = appendInstruction "Repeat 3 [Forward 100, Left 120]" model.source }
 
         AddCircle ->
-            autoRun (appendInstruction "Repeat 360 [Forward 2, Left 1]" model)
+            { model | source = appendInstruction "Repeat 360 [Forward 2, Left 1]" model.source }
 
-        AddTurtle ->
-            autoRun
-                (appendInstruction
-                    """
-                    Repeat 1 [
-                        Repeat 6 [Forward 60, Left 60],
-                        Left 90, Forward 20, Left 180, Forward 20, Left 180,
-                        Right 150, Forward 20, Left 180, Forward 20, Left 180,
-                        Left 60, Forward 20, Left 180, Forward 20, Left 180,
-                        Right 150, Forward 20, Left 180, Forward 20, Left 180,
-                        Left 90, Forward 10, Left 180, Forward 10, Left 180
-                    ]
-                    """
-                    model
-                )
+        AddHeart ->
+            { model | source = appendInstruction "Left 45, Repeat 90 [ Forward 2, Left 2 ], Right 90, Repeat 90 [ Forward 2, Left 2 ], Left 1, Forward 118, Left 90, Forward 118" model.source }
+
+        AddStar ->
+            { model | source = appendInstruction "Repeat 5 [Forward 150, Right 144]" model.source }
 
         ClearProgram ->
-            autoRun { model | source = "[ ]" }
+            { model | source = "[ ]" }
 
         Undo ->
-            autoRun (undoInstruction model)
+            { model | source = undoInstruction model.source }
 
         SetColor col ->
-            autoRun { model | color = col }
+            { model | color = col }
+
+        Trace ->
+            autoRun { model | showDrawing = True }
 
 
-appendInstruction : String -> Model -> Model
-appendInstruction instr model =
-    let
-        newSource =
-            case model.source of
-                "[ ]" ->
-                    "[ " ++ instr ++ " ]"
+-- SOURCE MANIPULATION
 
-                _ ->
-                    let
-                        inside =
-                            String.dropLeft 1 (String.dropRight 1 model.source)
-                    in
-                    "[ " ++ inside ++ ", " ++ instr ++ " ]"
-    in
-    { model | source = newSource }
-
-
-undoInstruction : Model -> Model
-undoInstruction model =
-    case model.source of
+appendInstruction : String -> String -> String
+appendInstruction instr source =
+    case source of
         "[ ]" ->
-            model
+            "[ " ++ instr ++ " ]"
 
         _ ->
             let
                 inside =
-                    String.dropLeft 1 (String.dropRight 1 model.source)
+                    String.dropLeft 1 (String.dropRight 1 source)
+            in
+            "[ " ++ inside ++ ", " ++ instr ++ " ]"
+
+
+undoInstruction : String -> String
+undoInstruction source =
+    case source of
+        "[ ]" ->
+            source
+
+        _ ->
+            let
+                inside =
+                    String.dropLeft 1 (String.dropRight 1 source)
 
                 items =
                     String.split "," inside
@@ -137,38 +132,13 @@ undoInstruction model =
 
                         _ :: rest ->
                             List.reverse rest
-
-                newSource =
-                    case newItems of
-                        [] ->
-                            "[ ]"
-
-                        _ ->
-                            "[ " ++ String.join ", " newItems ++ " ]"
             in
-            { model | source = newSource }
+            case newItems of
+                [] ->
+                    "[ ]"
 
-
--- STYLE POUR LES BOUTONS
-
-buttonStyle : List (Html.Attribute Msg)
-buttonStyle =
-    [ style "background-color" "#4a90e2"
-    , style "color" "white"
-    , style "border" "none"
-    , style "padding" "10px 20px"
-    , style "margin" "5px"
-    , style "border-radius" "6px"
-    , style "cursor" "pointer"
-    , style "font-size" "16px"
-    , style "font-family" "'Quicksand', sans-serif"
-    , style "box-shadow" "0 4px 6px rgba(0,0,0,0.1)"
-    , style "transition" "background-color 0.3s ease"
-    ]
-
-styledButton : Msg -> String -> Html Msg
-styledButton msg label =
-    button (buttonStyle ++ [ onClick msg ]) [ text label ]
+                _ ->
+                    "[ " ++ String.join ", " newItems ++ " ]"
 
 
 -- VIEW
@@ -181,65 +151,86 @@ view model =
         , style "background-color" "#d8ecff"
         , style "min-height" "100vh"
         ]
-        [ h2 [] [ text "TcTurtle – Interface améliorée" ]
+        [ h2 [] [ text "Magic's Draw" ]
 
         , div
             [ style "display" "flex"
             , style "gap" "40px"
             , style "align-items" "flex-start"
             ]
-            [ -- Colonne gauche : boutons
+            [
+              -- Colonne gauche
               div []
                 [ h2 [] [ text "Mouvement" ]
-                , styledButton AddForward "Forward 20"
-                , styledButton AddLeft "Left 15°"
-                , styledButton AddRight "Right 15°"
+                , blueButton AddForward "Avancer 20"
+                , blueButton AddLeft "Gauche 15°"
+                , blueButton AddRight "Droite 15°"
 
                 , div [ style "margin" "20px 0" ]
                     [ h2 [] [ text "Formes" ]
-                    , styledButton AddSquare "Carré"
-                    , styledButton AddTriangle "Triangle"
-                    , styledButton AddCircle "Cercle"
-                    , styledButton AddTurtle "Tortue"
+                    , blueButton AddSquare "Carré"
+                    , blueButton AddTriangle "Triangle"
+                    , blueButton AddCircle "Cercle"
+                    , blueButton AddHeart "Cœur"
+                    , blueButton AddStar "Étoile"
                     ]
 
                 , div [ style "margin" "20px 0" ]
                     [ h2 [] [ text "Couleurs" ]
-                    , styledButton (SetColor "black") "Noir"
-                    , styledButton (SetColor "red") "Rouge"
-                    , styledButton (SetColor "blue") "Bleu"
-                    , styledButton (SetColor "green") "Vert"
+                    , blueButton (SetColor "black") "Noir"
+                    , blueButton (SetColor "red") "Rouge"
+                    , blueButton (SetColor "blue") "Bleu"
+                    , blueButton (SetColor "green") "Vert"
                     ]
 
                 , div [ style "margin" "20px 0" ]
                     [ h2 [] [ text "Contrôle" ]
-                    , styledButton Undo "Undo"
-                    , styledButton ClearProgram "Clear"
+                    , blueButton Undo "Annuler"
+                    , blueButton ClearProgram "Effacer"
+                    , blueButton Trace "Tracer"
                     ]
                 ]
 
-              -- Colonne droite : zone de texte + dessin
+              -- Colonne droite
             , div []
                 [ textarea
                     [ value model.source
                     , onInput UpdateSource
-                    , rows 10
-                    , cols 50
+                    , rows 12
+                    , cols 55
                     , style "font-size" "16px"
                     ]
                     []
 
-                , div
-                    [ style "margin-top" "20px"
-                    , style "border" "1px solid #ccc"
-                    , style "padding" "10px"
-                    , style "display" "inline-block"
-                    , style "background" "white"
-                    ]
-                    [ viewResult model ]
+                , if model.showDrawing then
+                    div
+                        [ style "margin-top" "20px"
+                        , style "border" "1px solid #ccc"
+                        , style "padding" "10px"
+                        , style "display" "inline-block"
+                        , style "background" "white"
+                        ]
+                        [ viewResult model ]
+                  else
+                    text ""
                 ]
             ]
         ]
+
+
+blueButton : Msg -> String -> Html Msg
+blueButton msg label =
+    button
+        [ onClick msg
+        , style "background-color" "#007BFF"
+        , style "color" "white"
+        , style "border" "none"
+        , style "padding" "8px 12px"
+        , style "margin" "5px"
+        , style "border-radius" "4px"
+        , style "cursor" "pointer"
+        ]
+        [ text label ]
 
 
 viewResult : Model -> Html msg
