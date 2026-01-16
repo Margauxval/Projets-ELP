@@ -24,9 +24,9 @@ display color program =
             simulate program
     in
     svg
-        [ width "400"
-        , height "400"
-        , viewBox "0 0 400 400"
+        [ width "600"
+        , height "600"
+        , viewBox "0 0 600 600"
         ]
         (List.map (segmentToSvg color) segments)
 
@@ -37,16 +37,20 @@ simulate : List Instruction -> List Segment
 simulate instructions =
     let
         startPos =
-            ( 200, 200 )
+            ( 300, 300 )
 
         startAngle =
             0
     in
-    simulateHelp instructions startPos startAngle []
-        |> List.reverse
+    simulateHelp instructions startPos startAngle [] |> List.reverse
 
 
-simulateHelp : List Instruction -> ( Float, Float ) -> Float -> List Segment -> List Segment
+simulateHelp :
+    List Instruction
+    -> ( Float, Float )
+    -> Float
+    -> List Segment
+    -> List Segment
 simulateHelp instructions ( x, y ) angle acc =
     case instructions of
         [] ->
@@ -89,6 +93,8 @@ simulateHelp instructions ( x, y ) angle acc =
                     in
                     simulateHelp (repeated ++ rest) ( x, y ) angle acc
 
+
+-- SVG
 
 segmentToSvg : String -> Segment -> Svg msg
 segmentToSvg color s =
