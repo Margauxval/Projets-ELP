@@ -1,3 +1,4 @@
+
 module Main exposing (..)
 
 import Browser
@@ -89,24 +90,24 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ button [ onClick Couleur ] [ text "Changer de couleur" ]
-        , div [] [ text (String.fromInt model) ]
+        [ button [ onClick Couleur ] [ Html.text "Changer de couleur" ]
+        , div [] [ Html.text (String.fromInt model) ]
 
-        , button [ onClick Avancer ] [ text "Avancer" ]
-        , div [] [ text (String.fromInt model) ]
+        , button [ onClick Avancer ] [ Html.text "Avancer" ]
+        , div [] [ Html.text (String.fromInt model) ]
 
-        , button [ onClick Tourner ] [ text "Tourner" ]
-        , div [] [ text (String.fromInt model) ]
+        , button [ onClick Tourner ] [ Html.text "Tourner" ]
+        , div [] [ Html.text (String.fromInt model) ]
 
-        , button [ onClick Cercle ] [ text "Cercle" ]
-        , div [] [ text (String.fromInt model) ]
+        , button [ onClick Cercle ] [ Html.text "Cercle" ]
+        , div [] [ Html.text (String.fromInt model) ]
 
-        , button [ onClick Triangle ] [ text "Triangle" ]
-        , div [] [ text (String.fromInt model) ]
+        , button [ onClick Triangle ] [ Html.text "Triangle" ]
+        , div [] [ Html.text (String.fromInt model) ]
 
-        , button [ onClick Tortue ] [ text "Tortue" ]
-        , div [] [ text (String.fromInt model) ]
+        , button [ onClick Tortue ] [ Html.text "Tortue" ]
+        , div [] [ Html.text (String.fromInt model) ]
 
-        , button [ onClick Rectangle ] [ text "Rectangle" ]
-        , div [] [ text (String.fromInt model) ]
+        , button [ onClick Rectangle ] [ Html.text "Rectangle" ]
+        , div [] [ Html.text (String.fromInt model) ]
         ]
