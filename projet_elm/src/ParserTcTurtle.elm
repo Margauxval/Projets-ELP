@@ -48,21 +48,25 @@ block =
 instruction : Parser Instruction
 instruction =
     P.oneOf
-        [ P.succeed Forward
+        [ -- Forward
+          P.succeed Forward
             |. P.keyword "Forward"
             |. P.spaces
             |= P.int
 
+        -- Left
         , P.succeed Left
             |. P.keyword "Left"
             |. P.spaces
             |= P.int
 
+        -- Right
         , P.succeed Right
             |. P.keyword "Right"
             |. P.spaces
             |= P.int
 
+        -- Repeat
         , P.succeed Repeat
             |. P.keyword "Repeat"
             |. P.spaces
