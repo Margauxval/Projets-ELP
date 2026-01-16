@@ -86,7 +86,7 @@ update msg model =
                     """
                     model
                 )
-                
+
         ClearProgram ->
             autoRun { model | source = "[ ]" }
 
@@ -149,6 +149,28 @@ undoInstruction model =
             { model | source = newSource }
 
 
+-- STYLE POUR LES BOUTONS
+
+buttonStyle : List (Html.Attribute Msg)
+buttonStyle =
+    [ style "background-color" "#4a90e2"
+    , style "color" "white"
+    , style "border" "none"
+    , style "padding" "10px 20px"
+    , style "margin" "5px"
+    , style "border-radius" "6px"
+    , style "cursor" "pointer"
+    , style "font-size" "16px"
+    , style "font-family" "'Quicksand', sans-serif"
+    , style "box-shadow" "0 4px 6px rgba(0,0,0,0.1)"
+    , style "transition" "background-color 0.3s ease"
+    ]
+
+styledButton : Msg -> String -> Html Msg
+styledButton msg label =
+    button (buttonStyle ++ [ onClick msg ]) [ text label ]
+
+
 -- VIEW
 
 view : Model -> Html Msg
@@ -166,34 +188,33 @@ view model =
             , style "gap" "40px"
             , style "align-items" "flex-start"
             ]
-            [
-              -- Colonne gauche : boutons
+            [ -- Colonne gauche : boutons
               div []
                 [ h2 [] [ text "Mouvement" ]
-                , button [ onClick AddForward ] [ text "Forward 20" ]
-                , button [ onClick AddLeft, style "margin-left" "10px" ] [ text "Left 15°" ]
-                , button [ onClick AddRight, style "margin-left" "10px" ] [ text "Right 15°" ]
+                , styledButton AddForward "Forward 20"
+                , styledButton AddLeft "Left 15°"
+                , styledButton AddRight "Right 15°"
 
                 , div [ style "margin" "20px 0" ]
                     [ h2 [] [ text "Formes" ]
-                    , button [ onClick AddSquare ] [ text "Carré" ]
-                    , button [ onClick AddTriangle, style "margin-left" "10px" ] [ text "Triangle" ]
-                    , button [ onClick AddCircle, style "margin-left" "10px" ] [ text "Cercle" ]
-                    , button [ onClick AddTurtle, style "margin-left" "10px" ] [ text "Tortue" ]
+                    , styledButton AddSquare "Carré"
+                    , styledButton AddTriangle "Triangle"
+                    , styledButton AddCircle "Cercle"
+                    , styledButton AddTurtle "Tortue"
                     ]
 
                 , div [ style "margin" "20px 0" ]
                     [ h2 [] [ text "Couleurs" ]
-                    , button [ onClick (SetColor "black") ] [ text "Noir" ]
-                    , button [ onClick (SetColor "red"), style "margin-left" "10px" ] [ text "Rouge" ]
-                    , button [ onClick (SetColor "blue"), style "margin-left" "10px" ] [ text "Bleu" ]
-                    , button [ onClick (SetColor "green"), style "margin-left" "10px" ] [ text "Vert" ]
+                    , styledButton (SetColor "black") "Noir"
+                    , styledButton (SetColor "red") "Rouge"
+                    , styledButton (SetColor "blue") "Bleu"
+                    , styledButton (SetColor "green") "Vert"
                     ]
 
                 , div [ style "margin" "20px 0" ]
                     [ h2 [] [ text "Contrôle" ]
-                    , button [ onClick Undo ] [ text "Undo" ]
-                    , button [ onClick ClearProgram, style "margin-left" "10px" ] [ text "Clear" ]
+                    , styledButton Undo "Undo"
+                    , styledButton ClearProgram "Clear"
                     ]
                 ]
 
