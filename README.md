@@ -3,8 +3,8 @@
 
 
 
-** lien du discord : https://discord.gg/GeVZBCfj **
-lien du word partagé pour le CR de ELM: https://1drv.ms/w/c/1265599f2c973b15/IQBkCcqY6tWAR5_e4vzt7A3hAdIRe-JQZ7qYGWRfCDgiZhA?e=ceyja6
+- lien du discord : https://discord.gg/GeVZBCfj 
+- lien du word partagé pour le CR de ELM: https://1drv.ms/w/c/1265599f2c973b15/IQBkCcqY6tWAR5_e4vzt7A3hAdIRe-JQZ7qYGWRfCDgiZhA?e=ceyja6
 
 
 ## projet GO : image filter 
