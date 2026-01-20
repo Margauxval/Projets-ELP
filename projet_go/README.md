@@ -17,14 +17,14 @@
 
 Pour faire fonctionner ce programme, vous devez ouvrir deux terminaux différents.
 
-1. Lancer le Serveur
+### 1. Lancer le Serveur
 Dans le premier terminal, allez dans le dossier contenant serveur.go et lancez-le :
 
 ```go run serveur.go```
 
 Le serveur va afficher "Serveur en écoute sur le port 8080...". Laissez cette fenêtre ouverte.
 
-2. Lancer le Client
+### 2. Lancer le Client
 Dans un second terminal, utilisez la commande suivante en donnant les bons arguments :
 
 ```go run client.go <chemin_image_entree> <chemin_image_sortie> <nom_filtre>```
@@ -43,7 +43,7 @@ Filtres disponibles :
 
 Si vous oubliez quels arguments mettre, pas de panique ! Lancez le client sans argument et il vous rappèlera quoi mettre. 
 
-3. Arrêter le serveur
+### 3. Arrêter le serveur
 Une fois toutes les photos modifiées à votre guise, vous devez arrêter le serveur. Afin de pouvoir en lancer un nouveau derrière, n'oubliez pas de taper la commande :
 
 ``` kill -9 <PID> ```
