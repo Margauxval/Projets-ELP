@@ -3,17 +3,11 @@ module ParserTcTurtle exposing (Instruction(..), read)
 import Parser exposing (Parser, (|.), (|=))
 import Parser as P
 
-
--- TYPES
-
 type Instruction
     = Forward Int
     | Left Int
     | Right Int
     | Repeat Int (List Instruction)
-
-
--- PUBLIC API
 
 read : String -> Result String (List Instruction)
 read source =
@@ -23,9 +17,6 @@ read source =
 
         Err _ ->
             Err "Programme TcTurtle invalide."
-
-
--- PARSER
 
 program : Parser (List Instruction)
 program =
@@ -48,25 +39,22 @@ block =
 instruction : Parser Instruction
 instruction =
     P.oneOf
-        [ -- Forward
+        [
           P.succeed Forward
             |. P.keyword "Forward"
             |. P.spaces
             |= P.int
 
-        -- Left
         , P.succeed Left
             |. P.keyword "Left"
             |. P.spaces
             |= P.int
 
-        -- Right
         , P.succeed Right
             |. P.keyword "Right"
             |. P.spaces
             |= P.int
 
-        -- Repeat
         , P.succeed Repeat
             |. P.keyword "Repeat"
             |. P.spaces
@@ -74,3 +62,4 @@ instruction =
             |. P.spaces
             |= P.lazy (\_ -> block)
         ]
+
