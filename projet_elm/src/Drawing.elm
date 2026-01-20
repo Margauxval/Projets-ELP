@@ -4,9 +4,6 @@ import Svg exposing (Svg, svg, line)
 import Svg.Attributes exposing (..)
 import ParserTcTurtle exposing (Instruction(..))
 
-
--- TYPES
-
 type alias Segment =
     { x1 : Float
     , y1 : Float
@@ -21,23 +18,17 @@ type alias Bounds =
     , maxY : Float
     }
 
-
--- PUBLIC API
-
 display : String -> List Instruction -> Svg msg
 display color program =
     let
         ( segments, b ) =
             simulate program
 
-        -- On ajoute une marge de sécurité (padding) de 20 unités
         padding = 20
-        
-        -- Calcul de la largeur et hauteur réelles du tracé
+
         drawWidth = (b.maxX - b.minX) + (padding * 2)
         drawHeight = (b.maxY - b.minY) + (padding * 2)
 
-        -- Construction de la viewBox : "minX minY largeur hauteur"
         viewBoxStr =
             String.fromFloat (b.minX - padding)
                 ++ " "
@@ -91,8 +82,7 @@ simulateHelp instructions ( x, y ) angle acc bounds =
                         newY = y + dy
                         
                         newSegment = { x1 = x, y1 = y, x2 = newX, y2 = newY }
-                        
-                        -- On utilise Basics.min et Basics.max pour lever l'ambiguïté
+
                         newBounds =
                             { minX = Basics.min bounds.minX newX
                             , maxX = Basics.max bounds.maxX newX
@@ -114,7 +104,6 @@ simulateHelp instructions ( x, y ) angle acc bounds =
                     else
                         simulateHelp (block ++ (Repeat (k - 1) block :: rest)) ( x, y ) angle acc bounds
 
--- SVG
 
 segmentToSvg : String -> Segment -> Svg msg
 segmentToSvg color s =
@@ -128,3 +117,4 @@ segmentToSvg color s =
         , strokeLinecap "round"
         ]
         []
+
