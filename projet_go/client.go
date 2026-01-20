@@ -11,6 +11,7 @@ import (
 )
 
 func main() {
+	// fonction main qui gère et appelle les fonctions
 	fmt.Println(`
 ──────────────────────────────────────────────────────────────
   Programme de traitement d'image — JP, Lilou & Margaux
@@ -25,11 +26,11 @@ Arguments :
     <nom_filtre>            : filtre à appliquer
 
 Filtres disponibles :
-    noirblanc
-    thermique
-    yellowfluo
-    rouge, orange, jaune, vert, bleu, violet
-    gaussien (flou)
+    noirblanc -> applique un filtre noir et blanc
+    thermique -> applique un filtre thermique 
+    yellowfluo -> remplace les pixels jaunes par des pixels fluos random
+    rouge, orange, jaune, vert, bleu, violet -> applique un filtre de couleur sur toute l'image
+    floubox -> floute l'entiereté de l'image. Rq : en modifiant le code dans la fonction processchunk (env. l.30 dans serveur.go), vous pouvez modifier l'intensité du flou.
 
 Exemple :
     go run client.go photo.jpg resultat.jpg gaussien
@@ -72,7 +73,7 @@ Exemple :
 		panic(err)
 	}
 
-	// Connexion au serveur
+	// Connexion au serveur via TCP
 	conn, err := net.Dial("tcp", "localhost:8080")
 	if err != nil {
 		panic(err)
@@ -111,5 +112,3 @@ Exemple :
 
 	fmt.Println("Image traitée avec filtre", filterName, "et sauvegardée dans", outputPath)
 }
-
-
