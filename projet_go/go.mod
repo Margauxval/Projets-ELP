@@ -1,3 +1,3 @@
-module projet_gns
+module projet_go
 
 go 1.22.2
