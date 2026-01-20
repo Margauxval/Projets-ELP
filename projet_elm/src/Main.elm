@@ -8,8 +8,6 @@ import ParserTcTurtle exposing (Instruction(..), read)
 import Drawing exposing (display)
 
 
--- MODEL
-
 type alias Model =
     { source : String
     , result : Result String (List Instruction)
@@ -28,9 +26,6 @@ init =
     , customColor = ""
     }
 
-
--- MESSAGES
-
 type Msg
     = UpdateSource String
     | AddForward
@@ -48,9 +43,6 @@ type Msg
     | UpdateCustomColor String
     | ApplyCustomColor
     | RandomColor
-
-
--- UPDATE
 
 update : Msg -> Model -> Model
 update msg model =
@@ -123,8 +115,6 @@ update msg model =
             { model | color = randomChoice }
 
 
--- SOURCE MANIPULATION
-
 appendInstruction : String -> String -> String
 appendInstruction instr source =
     case source of
@@ -170,8 +160,6 @@ undoInstruction source =
                     "[ " ++ String.join ", " newItems ++ " ]"
 
 
--- VIEW
-
 view : Model -> Html Msg
 view model =
     div
@@ -188,7 +176,6 @@ view model =
             , style "align-items" "flex-start"
             ]
             [
-              -- Colonne gauche
               div []
                 [ h2 [] [ text "Mouvement" ]
                 , blueButton AddForward "Avancer 20"
@@ -235,7 +222,6 @@ view model =
                     ]
                 ]
 
-              -- Colonne droite
             , div []
                 [ textarea
                     [ value model.source
@@ -290,3 +276,4 @@ viewResult model =
 main : Program () Model Msg
 main =
     Browser.sandbox { init = init, update = update, view = view }
+
