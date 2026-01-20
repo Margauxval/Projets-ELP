@@ -1,6 +1,6 @@
 # Interface graphique TC-Turtle 
 
-![Logo Markdown](interface_graphique.png)
+![Interface graphique](interface_graphique.png)
 ## Projet Elm 
 
 On pensait plutot partir sur l'affichage d'un dessin que sur le word guesser, 
