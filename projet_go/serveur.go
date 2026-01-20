@@ -7,7 +7,7 @@ import (
 	"image"
 	"image/jpeg"
 	"net"
-	"projet_gns/imagefilters"
+	"projet_go/imagefilters"
 	"runtime"
 	"sync"
 	"time"
@@ -162,3 +162,4 @@ func handleConnection(conn net.Conn) {
 		return
 	}
 }
+
