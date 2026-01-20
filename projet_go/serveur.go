@@ -14,10 +14,20 @@ import (
 )
 
 func processChunk(src, dst *image.RGBA, bounds image.Rectangle, startY, endY int, filterName string, filter imagefilters.FilterFunc) {
+	// applique un filtre à une bande horizontale comprise entre startY et endY de l'image source src
+	// Paramètres :
+	//   - src : pointeur vers l'image source
+	//   - dst : pointeur vers l'image destination
+	//   - bounds : coordonnées de l'image à traiter
+	//   - startY : ligne de début (incluse)
+	//   - endY : ligne de fin (exclue)
+	//   - filterName : nom du filtre à appliquer
+	//Retour : pas de retour
+
 	for y := startY; y < endY; y++ {
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {
-			if filterName == "gaussien" {
-				dst.Set(x, y, imagefilters.FlouGaussien(src, x, y, 30))
+			if filterName == "floubox" {
+				dst.Set(x, y, imagefilters.FlouBox(src, x, y, 30)) // modifiez 30 pour intensifier ou réduire le flou
 				continue
 			}
 			r16, g16, b16, a16 := src.At(x, y).RGBA()
@@ -31,6 +41,8 @@ func processChunk(src, dst *image.RGBA, bounds image.Rectangle, startY, endY int
 }
 
 func main() {
+	// fonction main qui gère et appelle toutes les fonctions
+	// connexion TCP au client
 	ln, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		panic(err)
@@ -48,18 +60,30 @@ func main() {
 }
 
 func logPerf(filter string, workers int, duration time.Duration, bounds image.Rectangle) {
-    width := bounds.Max.X - bounds.Min.X
-    height := bounds.Max.Y - bounds.Min.Y
+	// affiche les informations de performance du traitement d'image dans la console.
+	// Paramètres :
+	//   - filter : nom du filtre appliqué
+	//   - workers : nombre de goroutines utilisées pour le traitement
+	//   - duration : durée totale du traitement
+	//   - bounds : dimensions de l'image traitée (largeur et hauteur)
+	// Retour : pas de retour
 
-    fmt.Println("────────────────────────────────────────")
-    fmt.Println("Filtre utilisé      :", filter)
-    fmt.Println("Goroutines utilisées:", workers)
-    fmt.Println("Taille image        :", width, "x", height)
-    fmt.Println("Temps de traitement :", duration)
-    fmt.Println("────────────────────────────────────────")
+	width := bounds.Max.X - bounds.Min.X
+	height := bounds.Max.Y - bounds.Min.Y
+
+	fmt.Println("────────────────────────────────────────")
+	fmt.Println("Filtre utilisé      :", filter)
+	fmt.Println("Goroutines utilisées:", workers)
+	fmt.Println("Taille image        :", width, "x", height)
+	fmt.Println("Temps de traitement :", duration)
+	fmt.Println("────────────────────────────────────────")
 }
 
 func handleConnection(conn net.Conn) {
+	// gère une connexion entrante, applique un filtre à l'image reçue, puis renvoie l'image modifiée.
+	// Paramètres :
+	//   - conn : connexion réseau TCP avec le client
+	// Retour : pas de retour
 	defer conn.Close()
 
 	decoder := gob.NewDecoder(conn)
@@ -94,7 +118,7 @@ func handleConnection(conn net.Conn) {
 	}
 
 	filter, ok := imagefilters.Filters[filterName]
-	if !ok && filterName != "gaussien" {
+	if !ok && filterName != "floubox" {
 		fmt.Println("Filtre inconnu :", filterName)
 		return
 	}
@@ -138,4 +162,3 @@ func handleConnection(conn net.Conn) {
 		return
 	}
 }
-
