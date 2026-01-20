@@ -30,16 +30,16 @@ Dans un second terminal, utilisez la commande suivante en donnant les bons argum
 ```go run client.go <chemin_image_entree> <chemin_image_sortie> <nom_filtre>```
 
 Liste des arguments:
-    <chemin_image_entree>   : chemin vers l'image source (ex: input.jpg)
-    <chemin_image_sortie>   : chemin vers l'image générée (ex: output.jpg) vous pouvez choisir le nom de votre nouvelle image !
-    <nom_filtre>            : filtre à appliquer
+- <chemin_image_entree>   : chemin vers l'image source (ex: input.jpg)
+- <chemin_image_sortie>   : chemin vers l'image générée (ex: output.jpg) vous pouvez choisir le nom de votre nouvelle image !
+- <nom_filtre>            : filtre à appliquer
 
 Filtres disponibles :
-    noirblanc -> applique un filtre noir et blanc
-    thermique -> applique un filtre thermique 
-    yellowfluo -> remplace les pixels jaunes par des pixels fluos random
-    rouge, orange, jaune, vert, bleu, violet -> applique un filtre de couleur sur toute l'image
-    floubox -> floute l'entiereté de l'image. Rq : en modifiant le code dans la fonction processchunk (env. l.30 dans serveur.go), vous pouvez modifier     l'intensité du flou.
+- noirblanc -> applique un filtre noir et blanc
+- thermique -> applique un filtre thermique 
+- yellowfluo -> remplace les pixels jaunes par des pixels fluos random
+- rouge, orange, jaune, vert, bleu, violet -> applique un filtre de couleur sur toute l'image
+- floubox -> floute l'entiereté de l'image. Rq : en modifiant le code dans la fonction processchunk (env. l.30 dans serveur.go), vous pouvez modifier l'intensité du flou.
 
 Si vous oubliez quels arguments mettre, pas de panique ! Lancez le client sans argument et il vous rappèlera quoi mettre. 
 
