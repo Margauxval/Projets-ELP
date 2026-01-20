@@ -1,7 +1,7 @@
 module Main exposing (main)
 
 import Browser
-import Html exposing (Html, button, div, h2, textarea, text)
+import Html exposing (Html, button, div, h2, textarea, text, input)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 import ParserTcTurtle exposing (Instruction(..), read)
@@ -15,6 +15,7 @@ type alias Model =
     , result : Result String (List Instruction)
     , color : String
     , showDrawing : Bool
+    , customColor : String
     }
 
 
@@ -24,6 +25,7 @@ init =
     , result = Ok []
     , color = "black"
     , showDrawing = False
+    , customColor = ""
     }
 
 
@@ -43,6 +45,9 @@ type Msg
     | Undo
     | SetColor String
     | Trace
+    | UpdateCustomColor String
+    | ApplyCustomColor
+    | RandomColor
 
 
 -- UPDATE
@@ -92,6 +97,30 @@ update msg model =
 
         Trace ->
             autoRun { model | showDrawing = True }
+
+        UpdateCustomColor txt ->
+            { model | customColor = txt }
+
+        ApplyCustomColor ->
+            { model | color = model.customColor }
+
+        RandomColor ->
+            let
+                colors =
+                    [ "#FF5733", "#33FF57", "#3357FF", "#FFD700", "#FF69B4", "#12ABB4" ]
+
+                index =
+                    modBy (List.length colors) (String.length model.source)
+
+                randomChoice =
+                    case List.drop index colors |> List.head of
+                        Just c ->
+                            c
+
+                        Nothing ->
+                            "black"
+            in
+            { model | color = randomChoice }
 
 
 -- SOURCE MANIPULATION
@@ -181,6 +210,21 @@ view model =
                     , blueButton (SetColor "red") "Rouge"
                     , blueButton (SetColor "blue") "Bleu"
                     , blueButton (SetColor "green") "Vert"
+
+                    , div [ style "margin-top" "15px" ]
+                        [ input
+                            [ value model.customColor
+                            , onInput UpdateCustomColor
+                            , placeholder "Exemple : #12ABB4"
+                            , style "color" "gray"
+                            , style "font-size" "14px"
+                            , style "width" "150px"
+                            , style "height" "30px"
+                            ]
+                            []
+                        , blueButton ApplyCustomColor "Valider mon choix"
+                        , blueButton RandomColor "Random"
+                        ]
                     ]
 
                 , div [ style "margin" "20px 0" ]
