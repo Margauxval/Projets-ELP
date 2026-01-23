@@ -16,7 +16,7 @@ export function majInterface(mains, etats, scores, auTourDe, donneur) {
         let iconeDonneur = (i === donneur) ? "⭐" : "";
 
         div.innerHTML = `
-            <div>${iconeLeader} <strong>J${i + 1}</strong> ${iconeDonneur}</div>
+            <div>${iconeLeader} <strong>Joueur ${i + 1}</strong> ${iconeDonneur}</div>
             <div style="color:#ffeb3b">Total: ${scores[i]}</div>
             <div>Tour: ${somme}</div>
             <div class="main-cartes">
@@ -36,7 +36,7 @@ export function afficherPodium(scores) {
     liste.innerHTML = "";
     classement.forEach((j, idx) => {
         let badge = (idx === 0) ? "🥇" : (idx === 1 ? "🥈" : (idx === 2 ? "🥉" : ""));
-        liste.innerHTML += `<div class="podium-line"><span>${badge} J${j.id}</span><span>${j.score} pts</span></div>`;
+        liste.innerHTML += `<div class="podium-line"><span>${badge} Joueur ${j.id}</span><span>${j.score} pts</span></div>`;
     });
     overlay.style.display = "flex";
 }

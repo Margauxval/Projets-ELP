@@ -21,7 +21,7 @@ function nouvelleManche() {
 document.getElementById('btn-tirer').onclick = () => {
     let c = paquet.pop();
     if (mainsJoueurs[joueurQuiParle].includes(c)) {
-        alert(`DOUBLON ${c} ! J${joueurQuiParle + 1} éliminé.`);
+        alert(`DOUBLON ${c} ! Joueur ${joueurQuiParle + 1} éliminé.`);
         mainsJoueurs[joueurQuiParle] = [];
         etatsJoueurs[joueurQuiParle] = false;
         finDeTour();
