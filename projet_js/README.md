@@ -20,3 +20,6 @@ Il doit être accompagné d'un Readme.md minimaliste permettant de lancer le jeu
 - si on décide d'arreter : ok, on attend la fin du tour
 - si on a 7 cartes de nb différents : la partie s'arrête, décompte des points (sommes des cartes pour les joueurs non éliminés)
 - fin de la partie quand somme est à 200 
+
+
+https://www.npmjs.com/package/@material/button
