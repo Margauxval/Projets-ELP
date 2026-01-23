@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Flip 7 - Modulaire</title>
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+    <h1>FLIP 7</h1>
+    <div id="status-general">Initialisation du paquet...</div>
+
+    <div class="table-de-jeu" id="table"></div>
+
+    <div id="overlay">
+        <div class="recap-box">
+            <h2 id="recap-titre">Fin de manche</h2>
+            <div id="podium-liste"></div>
+            <br>
+            <button id="btn-continuer" class="mdc-button mdc-button--raised">Continuer</button>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button id="btn-tirer" class="mdc-button mdc-button--raised">Tirer</button>
+        <button id="btn-stop" class="mdc-button mdc-button--outlined">S'arrêter</button>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
