@@ -5,8 +5,7 @@
 
 - lien du discord : https://discord.gg/GeVZBCfj 
 - lien du word partagé pour le CR de ELM: https://1drv.ms/w/c/1265599f2c973b15/IQBkCcqY6tWAR5_e4vzt7A3hAdIRe-JQZ7qYGWRfCDgiZhA?e=ceyja6
-
-
+- lien du github pour JS : https://github.com/sfrenot/javascript/tree/master/projet4
 ## Projet GO : image filter 
 Ne pas oublier d'évaluer les performances suivant la taille de l'image.
 mettre le nombre de goroutine en parametre pour diviser le travail de l'image.
