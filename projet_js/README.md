@@ -19,7 +19,10 @@ Il doit être accompagné d'un Readme.md minimaliste permettant de lancer le jeu
 - si on a la une carte qu'on a déj eu : éliminé
 - si on décide d'arreter : ok, on attend la fin du tour
 - si on a 7 cartes de nb différents : la partie s'arrête, décompte des points (sommes des cartes pour les joueurs non éliminés)
-- fin de la partie quand somme est à 200 
+- fin de la partie quand somme est à 200
+
+## Installation modules
+Pour lancer la version avec modules sur VS Code il faut installer l'extension Live Server et apres clic droit sur le fichier html et faire "Open with Live Server"
 
 
 https://www.npmjs.com/package/@material/button
