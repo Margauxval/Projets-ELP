@@ -49,7 +49,7 @@ update msg model =
     let
         -- analyse texte source
         autoRun newModel =
-            { newModel | result = read newModel.source }
+            { newModel | result = read newModel.source } -- prend le modèle actuel (newModel),  appelle le parser pr read, update result avec ce que le parser a trouvé (soit la liste de commandes Ok, soit une erreur Err).
     in
     case msg of
         UpdateSource txt ->
@@ -238,4 +238,5 @@ viewResult model =
 -- POINT D'ENTRÉE (Sandbox)
 main : Program () Model Msg
 main =
+
     Browser.sandbox { init = init, update = update, view = view }
