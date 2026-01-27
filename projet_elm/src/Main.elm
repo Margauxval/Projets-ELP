@@ -103,7 +103,7 @@ update msg model =
             -- sélection d'une couleur basée sur la longueur du programme (pseudo-hasard)
             let
                 colors = [ "#FF5733", "#33FF57", "#3357FF", "#FFD700", "#FF69B4", "#12ABB4" ]
-                index = modBy (List.length colors) (String.length model.source)
+                index = modBy (List.length colors) (String.length model.source) --List.length colors % String.length model.source
                 randomChoice =
                     case List.drop index colors |> List.head of
                         Just c -> c
@@ -118,16 +118,16 @@ appendInstruction instr source =
         "[ ]" -> "[ " ++ instr ++ " ]"
         _ ->
             let
-                inside = String.dropLeft 1 (String.dropRight 1 source)
+                inside = String.dropLeft 1 (String.dropRight 1 source) -- inside : source sans dernier caract sans premier caract 
             in
-            "[ " ++ inside ++ ", " ++ instr ++ " ]"
+            "[ " ++ inside ++ ", " ++ instr ++ " ]" -- structure let ... in ... : let (mes options(var/ fonct)) in (le résultat)
 
--- upprime la dernière instruction 
+-- supprime la dernière instruction 
 undoInstruction : String -> String
 undoInstruction source =
     case source of
         "[ ]" -> source
-        _ ->
+        _ -> -- else 
             let
                 inside = String.dropLeft 1 (String.dropRight 1 source)
                 items = String.split "," inside |> List.map String.trim
@@ -136,7 +136,7 @@ undoInstruction source =
                         [] -> []
                         _ :: rest -> List.reverse rest
             in
-            if List.isEmpty newItems then "[ ]" else "[ " ++ String.join ", " newItems ++ " ]"
+            if List.isEmpty newItems then "[ ]" else "[ " ++ String.join ", " newItems ++ " ]"  -- String.join (separateur) (text) --> text.split(separateur)
 
 view : Model -> Html Msg
 view model =
@@ -144,7 +144,7 @@ view model =
         [ style "padding" "20px"
         , style "font-family" "'Quicksand', sans-serif"
         , style "background-color" "#d8ecff"
-        , style "min-height" "100vh"
+        , style "min-height" "100vh" -- "Viewport Height" (Hauteur de la fenêtre d'affichage) -> 1vh : 1% taille de l'écran
         ]
         [ h2 [] [ text "Magic's Draw" ]
 
@@ -239,4 +239,5 @@ viewResult model =
 main : Program () Model Msg
 main =
 
-    Browser.sandbox { init = init, update = update, view = view }
+    Browser.sandbox { init = init, update = update, view = view } -- création du cycle init update view 
+
