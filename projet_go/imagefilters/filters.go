@@ -207,7 +207,7 @@ func FlouBox(src *image.RGBA, x, y, radius int) color.RGBA {
 			px := clamp(x+kx, bounds.Min.X, bounds.Max.X-1)
 			py := clamp(y+ky, bounds.Min.Y, bounds.Max.Y-1)
 
-			r16, g16, b16, _ := src.At(px, py).RGBA()
+			r16, g16, b16, _ := src.At(px, py).RGBA() // pixel à (at) px,py
 			rSum += float64(uint8(r16 >> 8))
 			gSum += float64(uint8(g16 >> 8))
 			bSum += float64(uint8(b16 >> 8))
@@ -241,7 +241,7 @@ func colorize(r, g, b, a uint8, target color.RGBA) color.RGBA {
 
 func filterNoirBlanc(r, g, b, a uint8) color.RGBA {
 	// applique le filtre noir et blanc
-	gray := uint8((int(r) + int(g) + int(b)) / 3)
+	gray := uint8((int(r) + int(g) + int(b)) / 3) // c'est une règle mathématique et ca marche pour tout
 	return color.RGBA{gray, gray, gray, a}
 }
 
@@ -282,3 +282,4 @@ var Filters = map[string]FilterFunc{
 	"bleu":   makeColorFilter(colorTargets["bleu"]),
 	"violet": makeColorFilter(colorTargets["violet"]),
 }
+
