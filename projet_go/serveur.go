@@ -28,10 +28,10 @@ func processChunk(src, dst *image.RGBA, bounds image.Rectangle, startY, endY int
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {
 			if filterName == "floubox" {
 				dst.Set(x, y, imagefilters.FlouBox(src, x, y, 30)) // modifiez 30 pour intensifier ou réduire le flou
-				continue
+				continue // passe à la boucle suivante
 			}
 			r16, g16, b16, a16 := src.At(x, y).RGBA()
-			R := uint8(r16 >> 8)
+			R := uint8(r16 >> 8) // .RGBA() renvoie une couleur sur 16 bits, on la remet sur 8 bits pr avoir entre 0 et 255
 			G := uint8(g16 >> 8)
 			B := uint8(b16 >> 8)
 			A := uint8(a16 >> 8)
@@ -55,7 +55,7 @@ func main() {
 			fmt.Println("Erreur de connexion :", err)
 			continue
 		}
-		go handleConnection(conn)
+		go handleConnection(conn) //go routines envoyées pr gérer client
 	}
 }
 
@@ -84,8 +84,9 @@ func handleConnection(conn net.Conn) {
 	// Paramètres :
 	//   - conn : connexion réseau TCP avec le client
 	// Retour : pas de retour
-	defer conn.Close()
+	defer conn.Close() // si fin imprévue du programme cette ligne sera tapée à la toute fin
 
+	//création de pipes	
 	decoder := gob.NewDecoder(conn)
 	encoder := gob.NewEncoder(conn)
 
@@ -108,7 +109,7 @@ func handleConnection(conn net.Conn) {
 	}
 
 	bounds := img.Bounds()
-	src := image.NewRGBA(bounds)
+	src := image.NewRGBA(bounds) // crée une nv img de taille bounds ?
 	dst := image.NewRGBA(bounds)
 
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
@@ -116,7 +117,6 @@ func handleConnection(conn net.Conn) {
 			src.Set(x, y, img.At(x, y))
 		}
 	}
-
 	filter, ok := imagefilters.Filters[filterName]
 	if !ok && filterName != "floubox" {
 		fmt.Println("Filtre inconnu :", filterName)
@@ -133,7 +133,7 @@ func handleConnection(conn net.Conn) {
 
 	start := time.Now()
 
-	var wg sync.WaitGroup
+	var wg sync.WaitGroup // pr vérifier que toutes les go routines sont synchronisées avant de lancer
 	for i := 0; i < ngoroutines; i++ {
 		startY := bounds.Min.Y + i*packetSize
 		endY := startY + packetSize
@@ -141,7 +141,7 @@ func handleConnection(conn net.Conn) {
 			endY = bounds.Max.Y
 		}
 		wg.Add(1)
-		go func(s, e int) {
+		go func(s, e int) { //start et end
 			defer wg.Done()
 			processChunk(src, dst, bounds, s, e, filterName, filter)
 		}(startY, endY)
@@ -151,7 +151,7 @@ func handleConnection(conn net.Conn) {
 	duration := time.Since(start)
 	logPerf(filterName, ngoroutines, duration, bounds)
 
-	var outBuf bytes.Buffer
+	var outBuf bytes.Buffer // en gros crée un buffer pour simuler le fichier dans la mémoire vive 
 	if err := jpeg.Encode(&outBuf, dst, nil); err != nil {
 		fmt.Println("Erreur encodage JPEG :", err)
 		return
@@ -162,4 +162,5 @@ func handleConnection(conn net.Conn) {
 		return
 	}
 }
+
 
