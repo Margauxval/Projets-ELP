@@ -1,36 +1,38 @@
-/* --- BASE --- */
+/* --- BASE & POLICE --- */
 body { 
-    font-family: 'Roboto', sans-serif; 
-    background: #1b5e20; 
+    font-family: 'Segoe UI', Roboto, sans-serif; 
+    background: #1b5e20; /* Vert tapis de jeu */
     color: white; 
     display: flex; 
     flex-direction: column; 
     align-items: center; 
     padding: 20px; 
     margin: 0;
+    overflow-x: hidden;
 }
+
+h1 { text-shadow: 2px 2px 4px rgba(0,0,0,0.5); letter-spacing: 2px; }
 
 #status-general { 
-    font-size: 1.3rem; 
+    font-size: 1.2rem; 
     margin: 15px; 
-    background: rgba(0,0,0,0.8); 
-    padding: 12px 30px; 
-    border-radius: 30px; 
-    border: 2px solid #ffeb3b; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.7); 
+    padding: 10px 25px; 
+    border-radius: 20px; 
+    border: 2px solid #ffeb3b;
+    font-weight: bold;
 }
 
-/* --- GRILLE DE JEU --- */
+/* --- GRILLE DES JOUEURS --- */
 .table-de-jeu { 
     display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
     gap: 20px; 
     width: 100%; 
-    max-width: 1200px; 
-    margin-bottom: 100px; /* Espace pour les boutons en bas */
+    max-width: 1100px; 
+    margin-top: 20px;
 }
 
-/* --- BOX JOUEUR --- */
 .joueur-box { 
     background: rgba(255,255,255,0.1); 
     border-radius: 15px; 
@@ -44,164 +46,112 @@ body {
 .joueur-box.actif { 
     border-color: #ffeb3b; 
     background: rgba(255,255,255,0.2); 
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(255, 235, 59, 0.2);
+    box-shadow: 0 0 15px rgba(255, 235, 59, 0.3);
 }
 
-/* --- ÉTATS SPÉCIFIQUES --- */
-.joueur-box.elimine { 
-    background: #b71c1c !important; 
-    opacity: 0.6; 
-    filter: grayscale(0.5);
+/* Couronne du leader */
+.crown {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    animation: bounce 2s infinite ease-in-out;
 }
 
-.joueur-box.gele {
-    background: rgba(3, 169, 244, 0.15) !important;
-    border-color: #03a9f4;
-    box-shadow: inset 0 0 15px rgba(3, 169, 244, 0.3);
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
 }
 
-.joueur-box.stop {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border-color: #ffffff;
-    opacity: 0.7;
+/* États spéciaux */
+.joueur-box.gele { background: rgba(3, 169, 244, 0.3) !important; border-color: #03a9f4; }
+.joueur-box.stop { opacity: 0.6; border-color: #ffffff; }
+.joueur-box.elimine { background: rgba(244, 67, 54, 0.4) !important; border-color: #f44336 !important; animation: shake 0.5s ease-in-out;}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
 }
 
-/* --- BADGES DE STATUT --- */
-.statut-badge {
-    margin-top: 10px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-.joueur-box.gele .statut-badge { color: #03a9f4; }
-.joueur-box.stop .statut-badge { color: #ffffff; }
-
-/* --- SYSTÈME DE CIBLE (FREEZE / FLIP 3) --- */
-.cible-cliquable { 
-    cursor: crosshair; 
-    border: 3px dashed #03a9f4 !important; 
-    animation: pulse-blue 1s infinite; 
-    background: rgba(3, 169, 244, 0.25) !important; 
+/* Animation pour choisir une cible */
+.cible-cliquable {
+    cursor: crosshair;
+    border: 3px dashed #03a9f4 !important;
+    animation: pulse-blue 1s infinite;
 }
 
-@keyframes pulse-blue { 
-    0%, 100% { transform: scale(1); } 
-    50% { transform: scale(1.03); } 
+@keyframes pulse-blue {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(3, 169, 244, 0.7); }
+    70% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(3, 169, 244, 0); }
+    100% { transform: scale(1); }
 }
 
 /* --- CARTES --- */
 .main-cartes { 
     display: flex; 
     flex-wrap: wrap; 
-    gap: 6px; 
+    gap: 8px; 
     justify-content: center; 
-    margin-top: 12px; 
-    min-height: 70px;
+    margin-top: 15px; 
+    min-height: 80px;
 }
 
 .carte { 
-    width: 45px; 
-    height: 65px; 
-    background: white; 
-    color: #1b5e20; 
-    border-radius: 6px; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    font-weight: 800; 
-    font-size: 1rem; 
-    box-shadow: 0 3px 6px rgba(0,0,0,0.4); 
+    width: 45px; height: 65px; 
+    background: white; color: #1b5e20; 
+    border-radius: 5px; 
+    display: flex; justify-content: center; align-items: center; 
+    font-weight: bold; font-size: 1.1rem;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
 }
 
 .carte.speciale { 
     background: #ff9800 !important; 
     color: white !important; 
-    font-size: 0.6rem; 
-    text-align: center; 
-    padding: 2px;
+    font-size: 0.65rem; 
+    text-align: center;
     border: 1px solid #e65100;
 }
 
-/* --- SCORE --- */
-.score-total { color: #ffeb3b; font-size: 1.2rem; font-weight: bold; }
-.score-tour { font-size: 0.9rem; opacity: 0.8; margin-bottom: 5px; }
+/* --- SCORING --- */
+.score-total { color: #ffeb3b; font-size: 1.3rem; font-weight: 900; }
+.score-tour { font-size: 0.9rem; opacity: 0.8; }
 
-/* --- OVERLAY DE VICTOIRE --- */
+/* --- OVERLAY FIN DE MANCHE --- */
 #overlay { 
     display: none; 
-    position: fixed; 
-    top: 0; left: 0; 
-    width: 100%; height: 100%; 
-    background: rgba(0,0,0,0.92); 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: center; 
-    z-index: 200; 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.85); 
+    z-index: 1000; align-items: center; justify-content: center; 
 }
 
 .recap-box { 
-    background: white; 
-    color: #333; 
-    padding: 35px; 
-    border-radius: 20px; 
-    width: 85%; 
-    max-width: 350px; 
-    text-align: center; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    background: white; color: #333; 
+    padding: 30px; border-radius: 20px; 
+    text-align: center; width: 300px;
 }
 
-#recap-titre { 
-    color: #1b5e20; 
-    font-size: 1.6rem; 
-    margin-bottom: 25px; 
-    font-weight: 900;
-}
-
-.podium-line { 
-    display: flex; 
-    justify-content: space-between; 
-    padding: 12px 5px; 
-    border-bottom: 1px solid #eee; 
+.podium-line {
+    display: flex; justify-content: space-between;
+    padding: 10px; border-bottom: 1px solid #eee;
     font-weight: bold;
 }
 
-/* --- BARRE D'ACTIONS --- */
+/* --- ACTIONS --- */
 .actions { 
-    position: fixed; 
-    bottom: 25px; 
-    display: flex; 
-    gap: 20px; 
-    background: rgba(255,255,255,0.95); 
-    padding: 15px 40px; 
-    border-radius: 60px; 
-    box-shadow: 0 8px 25px rgba(0,0,0,0.4); 
-    z-index: 150;
+    position: fixed; bottom: 30px; 
+    display: flex; gap: 15px;
 }
 
 button { 
-    cursor: pointer; 
-    padding: 12px 25px; 
-    border-radius: 10px; 
-    border: none; 
-    font-weight: 900; 
-    font-size: 1rem;
-    transition: all 0.2s ease; 
-    text-transform: uppercase;
+    padding: 12px 25px; border-radius: 30px; border: none;
+    font-weight: bold; cursor: pointer; text-transform: uppercase;
+    transition: 0.2s;
 }
 
-#btn-tirer { background: #1b5e20; color: white; }
-#btn-stop { background: #b71c1c; color: white; }
+#btn-tirer { background: #ffeb3b; color: #1b5e20; }
+#btn-stop { background: #f44336; color: white; }
+#btn-continuer { background: #1b5e20; color: white; margin-top: 20px; }
 
-button:hover:not(:disabled) { 
-    transform: scale(1.05);
-    filter: brightness(1.2);
-}
-
-button:disabled { 
-    background: #9e9e9e !important; 
-    color: #616161;
-    cursor: not-allowed; 
-    opacity: 0.5;
-}
+button:disabled { background: #ccc !important; color: #666; cursor: not-allowed; }
+button:hover:not(:disabled) { transform: scale(1.1); }

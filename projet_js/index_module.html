@@ -2,29 +2,29 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Flip 7 - Modulaire</title>
-    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"> </head>
+    <title>Flip 7 - Réseau</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
 <body>
-    <h1>FLIP 7</h1>
-    <div id="status-general">Initialisation du paquet...</div>
+    <h1>FLIP 7 - RÉSEAU</h1>
+    <div id="status-general">Connexion au serveur...</div>
 
     <div class="table-de-jeu" id="table"></div>
 
-    <div id="overlay">
+    <div id="overlay" style="display:none">
         <div class="recap-box">
             <h2 id="recap-titre">Fin de manche</h2>
             <div id="podium-liste"></div>
-            <br>
-            <button id="btn-continuer" class="mdc-button mdc-button--raised">Continuer</button>
+            <button id="btn-continuer">Nouvelle Manche</button>
         </div>
     </div>
 
     <div class="actions">
-        <button id="btn-tirer" class="mdc-button mdc-button--raised">Tirer</button>
-        <button id="btn-stop" class="mdc-button mdc-button--outlined">S'arrêter</button>
+        <button id="btn-tirer" disabled>Tirer</button>
+        <button id="btn-stop" disabled>S'arrêter</button>
     </div>
 
-    <script type="module" src="main.js"></script>
+    <script type="module" src="client.js"></script>
 </body>
 </html>
