@@ -24,5 +24,9 @@ Il doit être accompagné d'un Readme.md minimaliste permettant de lancer le jeu
 ## Installation modules
 Pour lancer la version avec modules sur VS Code il faut installer l'extension Live Server et apres clic droit sur le fichier html et faire "Open with Live Server"
 
-
+# Flip 7
+Projet écrit en Java Script par Margaux Vallée et Lilou Nadler dans le cadre du projet Ecosystème des Langages de Programmation - Département TC
+---
+## Modules utilisés 
+Dans ce projet, nous avons utilisé ce module de bouton 
 https://www.npmjs.com/package/@material/button
