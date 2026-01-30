@@ -1,16 +1,16 @@
 import { majInterface, afficherPodium } from './int_graphique.js';
 
-const socket = io();
+const socket = io();  // ouvrir une co
 let monIndex = null;
 window.enAttenteDeCible = false;
 
 // Logique de calcul du score (doit être identique au serveur)
 export function calculerScoreMain(main) {
-    let nombres = main.filter(c => typeof c === 'number');
-    let totalNombres = nombres.reduce((a, b) => a + b, 0);
+    let nombres = main.filter(c => typeof c === 'number'); //tableau de nombres uniquement
+    let totalNombres = nombres.reduce((a, b) => a + b, 0); // additionne a et b, renvoie a et b partent de 0
     
     // Application du multiplicateur x2
-    let scoreBase = main.includes('x2') ? totalNombres * 2 : totalNombres;
+    let scoreBase = main.includes('x2') ? totalNombres * 2 : totalNombres; 
     
     // Ajout des bonus fixes (+2, +4, etc.)
     let totalBonus = main.filter(c => typeof c === 'string' && c.startsWith('+'))
@@ -88,4 +88,5 @@ window.addEventListener('keydown', (e) => {
     if (e.key.toLowerCase() === 's') {
         socket.emit('demarrerPartie');
     }
+
 });
