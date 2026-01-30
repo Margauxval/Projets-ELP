@@ -33,7 +33,7 @@ export function majInterface(mains, etats, scores, auTourDe, donneur, arretes, m
                 ${main.map(c => `<div class="carte ${typeof c === 'number' ? '' : 'speciale'}">${c}</div>`).join('')}
             </div>
         `;
-        tableEl.appendChild(div);
+        tableEl.appendChild(div); // ajoute le noeud div à la table
     });
 
     if (window.enAttenteDeCible) {
@@ -59,4 +59,5 @@ export function afficherPodium(scores, estVictoireFinale = false, indexGagnant =
         </div>`).join('');
     
     overlay.style.display = "flex";
+
 }
