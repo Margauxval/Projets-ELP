@@ -32,12 +32,38 @@ function calculerScore(main) {
 
 function passerTour() {
     if (!game.etats.includes(true)) {
-        io.emit('finManche', game.scores);
+        verifierFinDePartie();
     } else {
         do {
             game.auTourDe = (game.auTourDe + 1) % game.sockets.length;
         } while (!game.etats[game.auTourDe] && game.etats.includes(true));
         io.emit('update', game);
+    }
+}
+
+function checkDoublon(main, nouvelleCarte) {
+    return main.filter(c => c === nouvelleCarte).length > 1;
+}
+
+function verifierFinDePartie() {
+    io.emit('update', game);
+
+    const gagnant = game.scores.findIndex(s => s >= 200);
+    if (gagnant !== -1) {
+        io.emit('victoireFinale', { index: gagnant, scores: game.scores });
+        game.scores = game.sockets.map(() => 0); 
+    } else {
+        io.emit('finManche', game.scores);
+    }
+}
+
+function verifierFinDePartie() {
+    const gagnant = game.scores.findIndex(s => s >= 200);
+    if (gagnant !== -1) {
+        io.emit('victoireFinale', { index: gagnant, scores: game.scores });
+        game.scores = [];
+    } else if (!game.etats.includes(true)) {
+        io.emit('finManche', game.scores);
     }
 }
 
@@ -60,29 +86,33 @@ io.on('connection', (socket) => {
         io.emit('update', game);
     });
 
-   socket.on('tirer', () => {
+    socket.on('tirer', () => {
         if (socket.id !== game.sockets[game.auTourDe] || game.enAttenteCible) return;
         let c = game.paquet.pop();
         let main = game.mains[game.auTourDe];
 
         if (c === "Freeze" || c === "Flip 3") {
-            game.enAttenteCible = true;
-            game.carteEnAttente = c;
-            socket.emit('demanderCible', c);
-            io.emit('update', game); 
+            let ciblesPossibles = game.etats.map((etat, idx) => etat && idx !== game.auTourDe);
+            
+            if (ciblesPossibles.includes(true)) {
+                game.enAttenteCible = true;
+                game.carteEnAttente = c;
+                socket.emit('demanderCible', c);
+            } else {
+                main.push(c);
+                io.emit('message', `Pas de cible valide pour ${c}. La carte est ajoutée à votre main.`);
+                passerTour();
+            }
         } else if (typeof c === 'number' && main.includes(c)) {
             if (main.includes("Second Chance")) {
                 main.splice(main.indexOf("Second Chance"), 1);
-                main.push(c);
-                io.emit('message', `Sauvé par Second Chance !`);
-                passerTour(); // Ne pas oublier de passer le tour après sauvetage
+                io.emit('message', `Sauvé par Second Chance ! La carte ${c} est défaussée.`);
+                passerTour();
             } else {
-                game.mains[game.auTourDe] = []; // Main vide = doublon
+                game.mains[game.auTourDe] = [];
                 game.etats[game.auTourDe] = false;
-                
-                // --- AJOUT : Vérification si tout le monde a perdu ---
                 if (!game.etats.includes(true)) {
-                    io.emit('update', game); // Update pour montrer la couleur rouge
+                    io.emit('update', game);
                     setTimeout(() => verifierFinDePartie(), 1000);
                 } else {
                     passerTour();
@@ -103,9 +133,9 @@ io.on('connection', (socket) => {
 
     socket.on('cibleChoisie', (indexCible) => {
         if (socket.id !== game.sockets[game.auTourDe]) return;
-        
+        if (!game.etats[indexCible]) return; // Sécurité : cible déjà hors-jeu
+
         let typeAttaque = game.carteEnAttente;
-        // On ajoute la carte d'attaque (Flip 3 ou Freeze) à la main de l'attaquant
         game.mains[game.auTourDe].push(typeAttaque);
 
         if (typeAttaque === "Freeze") {
@@ -118,40 +148,28 @@ io.on('connection', (socket) => {
                 let extra = game.paquet.pop();
                 tirees.push(extra);
                 
-                // On ajoute la carte à la main de la victime IMMEDIATEMENT pour l'affichage
-                if (extra !== "Freeze") {
-                    game.mains[indexCible].push(extra);
+                // On ajoute la carte à la main
+                game.mains[indexCible].push(extra);
+
+                // Notification si une carte normalement spéciale est tirée
+                if (extra === "Freeze" || extra === "Second Chance") {
+                    io.emit('message', `Carte ${extra} tirée ! (Sans effet durant le Flip 3)`);
                 }
 
-                // Logique des effets
-                if (extra === "Freeze") {
-                    game.mains[indexCible].push(extra); // On l'ajoute quand même pour le style
-                    game.scores[indexCible] += calculerScore(game.mains[indexCible]);
-                    game.etats[indexCible] = false;
+                // Vérification du doublon (Second Chance est ignorée ici)
+                if (typeof extra === 'number' && checkDoublon(game.mains[indexCible], extra)) {
+                    game.mains[indexCible] = []; 
+                    game.etats[indexCible] = false; 
+                    io.emit('message', `DOUBLON sur ${extra} ! Joueur ${indexCible + 1} est éliminé.`);
                     break; 
-                } 
-                else if (typeof extra === 'number' && checkDoublon(game.mains[indexCible], extra)) {
-                    if (game.mains[indexCible].includes("Second Chance")) {
-                        // Consomme la seconde chance
-                        game.mains[indexCible].splice(game.mains[indexCible].indexOf("Second Chance"), 1);
-                        io.emit('message', `Joueur ${indexCible + 1} sauvé par Second Chance pendant le Flip 3 !`);
-                    } else {
-                        // Doublon fatal : on vide la main
-                        game.mains[indexCible] = []; 
-                        game.etats[indexCible] = false; 
-                        break;
-                    }
                 }
-                // Optionnel : émettre un update ici si tu veux voir les cartes apparaître une par une
-                // io.emit('update', game); 
             }
-            io.emit('message', `Flip 3 terminé sur Joueur ${indexCible + 1} ! Cartes tirées : ${tirees.join(', ')}`);
+            io.emit('message', `Flip 3 terminé sur Joueur ${indexCible + 1} ! Cartes : ${tirees.join(', ')}`);
         }
 
         game.enAttenteCible = false;
         game.carteEnAttente = null;
 
-        // Vérification si tout le monde est hors-jeu
         if (!game.etats.includes(true)) {
             io.emit('update', game);
             setTimeout(() => verifierFinDePartie(), 1200);
@@ -159,20 +177,6 @@ io.on('connection', (socket) => {
             passerTour();
         }
     });
-
-    function checkDoublon(main, nouvelleCarte) {
-        return main.filter(c => c === nouvelleCarte).length > 1;
-    }
-
-    function verifierFinDePartie() {
-        const gagnant = game.scores.findIndex(s => s >= 200);
-        if (gagnant !== -1) {
-            io.emit('victoireFinale', { index: gagnant, scores: game.scores });
-            game.scores = []; // Reset pour la prochaine
-        } else if (!game.etats.includes(true)) {
-            io.emit('finManche', game.scores);
-        }
-    }
 
     socket.on('stop', () => {
         if (socket.id !== game.sockets[game.auTourDe]) return;
